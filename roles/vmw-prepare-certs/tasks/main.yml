@@ -1,0 +1,33 @@
+---
+# tasks file for vmw-prepare-certs
+- name: '[PREREQS][VMW-GET-CERTS] Download the vCenter root CA certificates'
+  get_url:
+    url: "https://{{ vcenter_host }}/certs/download.zip"
+    dest: "{{ user_path }}/vcenterca.zip"
+    validate_certs: no
+  register: vcentercafile
+
+- name: '[PREREQS][VMW-GET-CERTS] Create a temporary directory to decompress the vCenter root CA certificates'
+  file:
+    name: "{{ user_path }}/vcentercerts"
+    state: directory
+
+- name: '[PREREQS][VMW-GET-CERTS] Decompress the vCenter root CA certificates'
+  unarchive:
+    src: "{{ user_path }}/vcenterca.zip"
+    dest: "{{ user_path }}/vcentercerts"
+  when: vcentercafile.changed
+
+- name: '[PREREQS][VMW-GET-CERTS] Install the vCenter root CA certificates'
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/pki/ca-trust/source/anchors"
+    remote_src: yes
+  with_fileglob: "{{ user_path }}/vcentercerts/certs/lin/*"
+  when: vcentercafile.changed
+
+- name: '[PREREQS][VMW-GET-CERTS] Update the system trust'
+  shell: "update-ca-trust extract"
+  when: vcentercafile.changed
+
+...
