@@ -19,7 +19,7 @@ vcenter_datastore: datastore1
 #vcenter_folder: "{{ cluster_name }}"
 vcenter_folder: iaragone-ocp-mgqn4
 vcenter_network: VM Network
-vcenter_hostname: vcenter.localdomain
+vcenter_hostname: vcenter.bcnconsulting.com
 
 #### Only in Tower-mode
 #tower_used: True
