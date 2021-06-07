@@ -4,6 +4,7 @@
   connection: local
   vars_files:
     - vars/vars.yml
+    - vault/vault.yml
   tasks:
     - name: '[UNINSTALL] Uninstall of the OCP4 Cluster'
       include_role:
@@ -11,3 +12,21 @@
       when:
         - uninstall_ocp is defined
         - uninstall_ocp | bool
+        - cloud_provider is not match('vcenter')
+
+    - block:
+        - name: '[OCP4-AUTO-INSTALL][PREREQS] Prerequisites for the uninstallation'
+          include_role:
+            name: "{{ item }}"
+          loop:
+            - common
+          when:
+            - only_post_install != True
+
+        - name: '[UNINSTALL] Destroy the OCP4 Cluster (vCenter)'
+          include_role:
+            name: "ocp4-vcenter-destroy"
+      when:
+        - uninstall_ocp is defined
+        - uninstall_ocp | bool
+        - cloud_provider is match('vcenter')

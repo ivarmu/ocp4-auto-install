@@ -1,0 +1,15 @@
+---
+# tasks file for ocp4-vcenter-destroy
+- name: Destroy the entire vCenter Folder
+  community.vmware.vcenter_folder:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    datacenter_name: '{{ vcenter_datacenter }}'
+    folder_name: 'iaragone-ocp-mgqn4'
+    state: absent
+  register: vm_folder_deletion_result
+
+- name: debug
+  debug:
+    var: vm_folder_deletion_result

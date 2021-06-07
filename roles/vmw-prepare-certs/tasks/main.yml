@@ -2,7 +2,7 @@
 # tasks file for vmw-prepare-certs
 - name: '[PREREQS][VMW-GET-CERTS] Download the vCenter root CA certificates'
   get_url:
-    url: "https://{{ vcenter_host }}/certs/download.zip"
+    url: "https://{{ vcenter_hostname }}/certs/download.zip"
     dest: "{{ user_path }}/vcenterca.zip"
     validate_certs: no
   register: vcentercafile

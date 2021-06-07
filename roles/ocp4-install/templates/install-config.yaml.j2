@@ -32,7 +32,7 @@ platform:
 {% if cloud_provider == 'ec2' %}
   aws:
     region: {{ aws_region }}
-{% else if cloud_provider == 'vcenter' %}
+{% elif cloud_provider == 'vcenter' %}
   vsphere:
     apiVIP: {{ vcenter_VIP }}
     ingressVIP: {{ vcenter_ingressVIP }}
@@ -42,9 +42,9 @@ platform:
     network: {{ vcenter_network }}
     username: {{ vcenter_username }}
     password: {{ vcenter_password }}
-    vCenter: {{ vcenter_host }}
+    vCenter: {{ vcenter_hostname }}
 {% endif %}
 publish: External
-pullSecret: '{{ ocp4_pull_secret |  replace("'",'"') }}'
+pullSecret: '{{ ocp4_pull_secret | replace( "'", '"') | replace( 'u"', '"') }}'
 sshKey: |
   {{ idrsapub.content | b64decode }}

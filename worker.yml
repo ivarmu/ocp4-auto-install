@@ -5,7 +5,5 @@
   become: true
   roles:
     - role: vmw-prepare-certs
-  environment:
-    https_proxy: http://localhost:51313
 ...
 

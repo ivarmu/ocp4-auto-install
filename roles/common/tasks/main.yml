@@ -12,12 +12,24 @@
 
 - name: '[INSTALL_CONFIG] [PREREQS] Copy python prerequisites file'
   copy:
-    src: ./requirements.txt
-    dest: "{{ user_path }}/requirements.txt"
+    src: "{{ reqfile.filename }}"
+    dest: "{{ user_path }}/{{ reqfile.filename }}"
+  loop:
+    - { filename: './requirements.txt' }
+    - { filename: './requirements_vcenter.txt' , vcenter_reqs: "{{ cloud_provider is match('vcenter') }}" }
+  loop_control:
+    loop_var: reqfile
+  when: reqfile.vcenter_reqs | default(True) | bool
 
 - name: '[INSTALL_CONFIG] [PREREQS] Install python prerequisites'
   pip:
-    requirements: "{{ user_path }}/requirements.txt"
+    requirements: "{{ user_path }}/{{ installreqfile.filename }}"
+  loop:
+    - { filename: 'requirements.txt' }
+    - { filename: 'requirements_vcenter.txt' , vcenter_reqs: "{{ cloud_provider is match('vcenter') }}" }
+  loop_control:
+    loop_var: installreqfile
+  when: installreqfile.vcenter_reqs | default(True) | bool
 
 - name: '[INSTALL_CONFIG] Generate SSH keys'
   openssh_keypair:

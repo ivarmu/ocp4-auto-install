@@ -1,4 +1,6 @@
 ---
 
 - import_tasks: download.yml
+  when: cloud_provider is match("ec2")
 - import_tasks: install.yml
+  when: cloud_provider is match("ec2")
