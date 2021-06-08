@@ -1,3 +1,4 @@
+ansible.cfg
 #vault/vault.yml
 .vault-password-file
 #vars/vars.yml
