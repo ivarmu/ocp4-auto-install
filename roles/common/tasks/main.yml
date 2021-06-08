@@ -15,8 +15,8 @@
     src: "{{ reqfile.filename }}"
     dest: "{{ user_path }}/{{ reqfile.filename }}"
   loop:
-    - { filename: './requirements_kubernetes.txt' }
-    - { filename: './requirements_vcenter.txt' , vcenter_reqs: "{{ cloud_provider is match('vcenter') }}" }
+    - { filename: './python_requirements.txt' }
+    - { filename: './python_requirements_vcenter.txt' , vcenter_reqs: "{{ cloud_provider is match('vcenter') }}" }
   loop_control:
     loop_var: reqfile
   when: reqfile.vcenter_reqs | default(True) | bool
@@ -25,8 +25,8 @@
   pip:
     requirements: "{{ user_path }}/{{ installreqfile.filename }}"
   loop:
-    - { filename: 'requirements_kubernetes.txt' }
-    - { filename: 'requirements_vcenter.txt' , vcenter_reqs: "{{ cloud_provider is match('vcenter') }}" }
+    - { filename: 'python_requirements.txt' }
+    - { filename: 'python_requirements_vcenter.txt' , vcenter_reqs: "{{ cloud_provider is match('vcenter') }}" }
   loop_control:
     loop_var: installreqfile
   when: installreqfile.vcenter_reqs | default(True) | bool
