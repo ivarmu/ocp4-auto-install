@@ -7,7 +7,6 @@
   loop:
     - "vars/configure_tower_general.yml"
     - "vars/configure_tower_vault.yml"
-    - "vars/configure_tower_venvs.yml"
   loop_control:
     loop_var: include_vars_tower_create_venv
 
@@ -23,13 +22,14 @@
 
 - name: "Tower Create VENV ({{ venv_name }}) | Get Current Tower Custom Virtual Environments"
   uri:
-    url: 'https://{{ configure_tower_server }}/api/v2/config/'
-    url_username: "{{ configure_tower_username }}"
-    url_password: "{{ configure_tower_password }}"
+    url: 'https://{{ inventory_hostname }}/api/v2/config/'
+    url_username: "{{ tower_ui_username }}"
+    url_password: "{{ tower_ui_pass }}"
     force_basic_auth: yes
     method: GET
     validate_certs: no
   register: current_venvs
+  when: inventory_hostname in groups['tower_nodes']
 
 - name: "Tower Create VENV ({{ venv_name }}) | Show Current Virtual Environments"
   debug:
@@ -46,8 +46,6 @@
   #   HTTPS_PROXY: "{{ proxy_url | default(omit) }}"
   #   http_proxy: "{{ proxy_url | default(omit) }}"
   #   https_proxy: "{{ proxy_url | default(omit) }}"
-  delegate_to: "{{ configure_tower_server }}"
-  remote_user: root
   register: venv_create_res
 
 - name: "Tower Create VENV ({{ venv_name }}) | Show the creation process output"
@@ -56,9 +54,9 @@
 
 - name: "Tower Create VENV ({{ venv_name }}) | Inform Tower of the new custom venv"
   uri:
-    url: "https://{{ configure_tower_server }}/api/v2/settings/system/"
-    url_username: "{{ configure_tower_username }}"
-    url_password: "{{ configure_tower_password }}"
+    url: "https://{{ inventory_hostname }}/api/v2/settings/system/"
+    url_username: "{{ tower_ui_username }}"
+    url_password: "{{ tower_ui_pass }}"
     force_basic_auth: yes
     method: PATCH
     validate_certs: no
@@ -67,6 +65,7 @@
     body_format: json
     headers:
       Content-Type: application/json
+  when: inventory_hostname in groups['tower_nodes']
 
 - name: "Tower Create VENV ({{ venv_name }}) | Install needed pip packages for virt env"
   pip:
@@ -80,8 +79,6 @@
   #   HTTPS_PROXY: "{{ proxy_url | default(omit) }}"
   #   http_proxy: "{{ proxy_url | default(omit) }}"
   #   https_proxy: "{{ proxy_url | default(omit) }}"
-  delegate_to: "{{ configure_tower_server }}"
-  remote_user: root
 
 - name: "Tower Create VENV ({{ venv_name }}) | Install aditional libs"
 #  include_role:
@@ -89,7 +86,7 @@
 #  vars:
 #    virtualenv_path: "{{ venv_base_path }}/{{ venv_name }}"
   pip:
-    name: "{{ list_pip_package }}"
+    name: "{{ list_pip_package.split(',') | list }}"
     virtualenv: "{{ venv_base_path }}/{{ venv_name }}"
     extra_args: "{{ pip_extra_args }}"
   # environment:
@@ -97,7 +94,5 @@
   #   HTTPS_PROXY: "{{ proxy_url | default(omit) }}"
   #   http_proxy: "{{ proxy_url | default(omit) }}"
   #   https_proxy: "{{ proxy_url | default(omit) }}"
-  delegate_to: "{{ configure_tower_server }}"
-  remote_user: root
   when: list_pip_package is defined and list_pip_package is not none and list_pip_package|length>0
 ...

@@ -4,6 +4,7 @@
   loop:
     - "vars/configure_tower_general.yml"
     - "vars/configure_tower_vault.yml"
+    - "vars/configure_tower_venvs.yml"
     - "vars/configure_tower_job_templates.yml"
   when: configure_tower_job_templates is not defined
 
@@ -11,7 +12,7 @@
   ansible.tower.tower_job_template:
     tower_username: "{{ configure_tower_username }}"
     tower_password: "{{ configure_tower_password }}"
-    tower_host: "{{ configure_tower_server_url }}"
+    tower_host: "{{ configure_tower_server }}"
     validate_certs: "{{ configure_tower_validate_certs }}"
     name: "{{ item.name }}"
     project: "{{ item.project }}"
@@ -35,6 +36,7 @@
     start_at_task: "{{ item.start_at_task | default(omit) }}"
     verbosity: "{{ item.verbosity | default(omit) }}"
     vault_credential: "{{ item.vault_credential | default(omit) }}"
+    custom_virtualenv: "{{ venv_base_path }}/{{ venv_name }}"
     survey_enabled: "{{ item.survey_enabled | default('false') }}"
     survey_spec: "{{ (lookup('file', item.survey_spec_file) | from_json) if item.survey_spec_file is defined else omit }}"
     state: "{{ item.state | default('present') }}"
@@ -58,7 +60,7 @@
 ## Credentials will be added collecting IDs first and the throught the Tower API
 #- name: Login Against Tower | tower-cli
 #  raw: |
-#    tower-cli config host "{{ configure_tower_server_url }}" && \
+#    tower-cli config host "{{ configure_tower_server }}" && \
 #    tower-cli config verify_ssl false && \
 #    tower-cli login "{{ configure_tower_username }}" --password "{{ configure_tower_password }}"
 #  delegate_to: "{{ 'localhost' if tower_local else omit }}"
@@ -118,7 +120,7 @@
 #
 #- name: Associate credential to JobTemplate
 #  uri:
-#    url: "https://{{ configure_tower_server_url }}/api/v2/job_templates/{{ item.value.jt_id }}/credentials/"
+#    url: "https://{{ configure_tower_server }}/api/v2/job_templates/{{ item.value.jt_id }}/credentials/"
 #    user: "{{ configure_tower_username }}"
 #    password: "{{ configure_tower_password }}"
 #    force_basic_auth: yes
