@@ -28,7 +28,7 @@ vcenter_hostname: vcenter.bcnconsulting.com
 
 #### Install Vars
 awscli-download: False
-prereqs: False
+prereqs: True
 uninstall_ocp: True # VERY CAREFUL WITH THIS VAR :)
 
 #### Post Install Vars
