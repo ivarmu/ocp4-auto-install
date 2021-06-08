@@ -1,0 +1,13 @@
+---
+configure_tower_projects:
+  - name: "Auto OCP4 Ephemeral Clusters"
+    description: "Auto OCP4 Ephemeral Clusters repository"
+    scm_url: https://github.com/ivarmu/ocp4-auto-install.git
+    scm_type: git
+    scm_branch: 'feature/addVMwareSupport'
+    scm_clean: true
+    scm_delete_on_update: true
+    scm_update_on_launch: false
+    scm_update_cache_timeout: 60
+    scm_credential: "iam_github"
+...

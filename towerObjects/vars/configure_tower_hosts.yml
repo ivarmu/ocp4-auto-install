@@ -1,0 +1,6 @@
+---
+configure_tower_hosts:
+  - name: localhost
+    description: localhost
+    inventory: "localhost"
+...

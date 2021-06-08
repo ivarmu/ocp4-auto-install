@@ -1,0 +1,9 @@
+---
+configure_tower_groups:
+  - name: "localhost"
+    description: "Group for Local servers"
+    inventory: "localhost"
+    hosts:
+      - localhost
+...
+

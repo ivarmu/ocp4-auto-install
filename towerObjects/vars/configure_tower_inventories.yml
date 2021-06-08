@@ -1,0 +1,6 @@
+---
+configure_tower_inventories:
+  - name: "localhost"
+    description: "Inventory for localhost"
+    organization: "Default"
+...

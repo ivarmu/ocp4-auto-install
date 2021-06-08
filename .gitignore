@@ -3,3 +3,4 @@
 #vars/vars.yml
 vars/aws-creds.yml
 vars/vars-backup.yml
+ansible.cfg

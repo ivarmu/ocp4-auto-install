@@ -1,0 +1,29 @@
+---
+configure_tower_job_templates:
+  - name: "Install OCP4 Ephemeral Cluster"
+    description: "Install OCP4 Ephemeral Cluster"
+    project: "Auto OCP4 Ephemeral Clusters"
+    inventory: "localhost"
+    playbook: "deploy_only.yml"
+    job_type: run
+    #extra_vars_path: ""
+    fact_caching_enabled: true
+    credentials:
+      - 'EphemeralOCP4 Vault'
+      - 'EphemeralOCP4 vCenter'
+      - 'EphemeralOCP4 PullSecret'
+    state: "{{ global_state | default(omit) }}"
+
+  - name: "Uninstall OCP4 Ephemeral Cluster"
+    description: "Uninstall OCP4 Ephemeral Cluster"
+    project: "Auto OCP4 Ephemeral Clusters"
+    inventory: "localhost"
+    playbook: "undeploy.yml"
+    job_type: run
+    #extra_vars_path: ""
+    fact_caching_enabled: true
+    credentials:
+      - 'EphemeralOCP4 Vault'
+      - 'EphemeralOCP4 vCenter'
+    state: "{{ global_state | default(omit) }}"
+...

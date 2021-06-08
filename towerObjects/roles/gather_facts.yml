@@ -1,0 +1,188 @@
+---
+- name: Gather Facts | Get cpd, environment and isolate_node from Inventory
+  set_fact:
+    set_fact_cpd: "{{ cpd | upper }}"
+    set_fact_env: "{{ os_entorno | upper }}"
+    set_fact_isolate_node: "{{ isolate_node | upper }}"
+  when: cpd is defined and os_entorno is defined and isolate_node is defined
+
+# LOCATIONs and SMARTPROXYs
+- name: "Gather Facts | Set foreman_location_fact and smartproxy_fqdn | BS2CLOUD - CDV"
+  set_fact:
+    foreman_location_fact: 'LC-AL-GP-O-CDV0-DEF-GEO-001'
+    smartproxy_fqdn: xcpcvidas904.es.onpremise.bancsabadell.com
+  when:
+    - set_fact_cpd is defined
+    - (set_fact_cpd == 'CDV' and set_fact_isolate_node == 'BS2CLOUD') or
+      (set_fact_cpd != 'SFB' and set_fact_isolate_node != 'BS2CLOUD') or
+      (set_fact_cpd != 'AM' and set_fact_isolate_node != 'BS2CLOUD') or
+      (set_fact_cpd != 'AZ' and set_fact_isolate_node != 'BS2CLOUD') or
+      (set_fact_cpd != 'SFB' and set_fact_isolate_node != 'IBM') or
+      (set_fact_cpd != 'CBS' and set_fact_isolate_node != 'IBM') or
+      (set_fact_cpd != 'SFB' and set_fact_isolate_node != 'DXC') or
+      (set_fact_cpd != 'CBS' and set_fact_isolate_node != 'DXC')
+
+- name: Gather Facts | Set foreman_location_fact and  smartproxy_fqdn | BS2CLOUD - SFB
+  set_fact:
+    foreman_location_fact: 'LC-AL-GP-O-SFB0-DEF-GEO-001'
+    smartproxy_fqdn: xcpsfidas904.es.onpremise.bancsabadell.com
+  when:
+    - set_fact_cpd is defined
+    - set_fact_isolate_node is defined
+    - set_fact_cpd == 'SFB' and set_fact_isolate_node == 'BS2CLOUD'
+
+- name: Gather Facts | Set foreman_location_fact | BS2CLOUD - STR
+  set_fact:
+    foreman_location_fact: 'LC-AL-GP-O-STR0-DEF-GEO-001'
+    smartproxy_fqdn: xcpcvidas904.es.onpremise.bancsabadell.com
+  when:
+    - set_fact_cpd is defined
+    - set_fact_isolate_node is defined
+    - set_fact_cpd == 'CDV-SFB' and set_fact_isolate_node == 'BS2CLOUD'
+
+- name: Gather Facts | Set foreman_location_fact and  smartproxy_fqdn | BS2CLOUD - AWS
+  set_fact:
+    foreman_location_fact: 'LC-AL-GP-O-AWS0-DEF-GEO-001'
+    smartproxy_fqdn: xcpamidas901.shared.aws.bancsabadell.com
+  when:
+    - set_fact_cpd is defined
+    - set_fact_isolate_node is defined
+    - set_fact_cpd == 'AM' and set_fact_isolate_node == 'BS2CLOUD'
+
+- name: Gather Facts | Set foreman_location_fact and  smartproxy_fqdn | BS2CLOUD - Azure
+  set_fact:
+    foreman_location_fact: 'LC-AL-GP-O-AZU0-DEF-GEO-001'
+    smartproxy_fqdn: xcpazidas901.transit.az.bancsabadell.com
+  when:
+    - set_fact_cpd is defined
+    - set_fact_isolate_node is defined
+    - set_fact_cpd == 'AZ' and set_fact_isolate_node == 'BS2CLOUD'
+
+- name: Gather Facts | Set foreman_location_fact and  smartproxy_fqdn | IBM - SFB
+  set_fact:
+    foreman_location_fact: 'LC-AL-GP-O-IBM1-DEF-GEO-001'
+    smartproxy_fqdn: es4pm25bsab.bancsabadell.com
+  when:
+    - set_fact_cpd is defined
+    - set_fact_isolate_node is defined
+    - set_fact_cpd == 'SFB' and set_fact_isolate_node == 'IBM'
+
+- name: Gather Facts | Set foreman_location_fact and  smartproxy_fqdn | IBM - CBS
+  set_fact:
+    foreman_location_fact: 'LC-AL-GP-O-IBM2-DEF-GEO-001'
+    smartproxy_fqdn: es5pm25bsab.bancsabadell.com
+  when:
+    - set_fact_cpd is defined
+    - set_fact_isolate_node is defined
+    - set_fact_cpd == 'CBS' and set_fact_isolate_node == 'IBM'
+
+# ENV
+- name: Gather Facts | Set ENV | DEV
+  set_fact:
+    env: DEV
+  when:
+    - set_fact_env is defined
+    - set_fact_env == 'D' or set_fact_env == 'DESARROLLO' or set_fact_env == 'DEV'
+
+- name: Gather Facts | Set ENV | UAT
+  set_fact:
+    env: UAT
+  when:
+    - set_fact_env is defined
+    - set_fact_env == 'T' or set_fact_env == 'TEST'
+
+- name: Gather Facts | Set ENV | INT
+  set_fact:
+    env: INT
+  when:
+    - set_fact_env is defined
+    - set_fact_env == 'I' or set_fact_env == 'INTEGRACION' or set_fact_env == 'INT'
+
+- name: Gather Facts | Set ENV | PRE
+  set_fact:
+    env: PRE
+  when:
+    - set_fact_env is defined
+    - set_fact_env == 'U' or set_fact_env == 'PRE'
+
+- name: Gather Facts | Set ENV  PRO
+  set_fact:
+    env: PRO
+  when:
+    - set_fact_env is defined
+    - set_fact_env == 'P' or set_fact_env == 'PRODUCCION' or set_fact_env == 'PRO'
+
+# Activation Keys
+- name: Gather Facts | Set Activation Key | OS
+  set_fact:
+    activation_key: "AK-AL-ST-L-RHEL-{{ env }}-EL{{ ansible_distribution_major_version }}-000"
+  when:
+    - ansible_distribution_major_version is defined
+    - set_ak_type is defined
+    - set_ak_type == 'RHEL-EL'
+
+- name: Gather Facts | Set Activation Key | INFRA
+  set_fact:
+    activation_key: "AK-AL-ST-L-{{ product }}-{{ env }}-{{ sub_product }}-00{{ ansible_distribution_major_version }}"
+  when:
+    - ansible_distribution_major_version is defined
+    - set_ak_type is defined
+    - set_ak_type == 'SAT6-CAP' or set_ak_type == 'REV4-MGR' or set_ak_type == 'REV4-RVH' or set_ak_type == 'CFM5-MGM'
+
+- name: Gather Facts | Set Activation Key | OCP
+  set_fact:
+    activation_key: "AK-AL-ST-L-{{ product }}-{{ env }}-{{ sub_product }}-{{ ocp_version }}"
+  when:
+    - set_ak_type is defined
+    - set_ak_type == 'OCP3-OCP' and ocp_version is defined
+
+- name: Set fact fix_os_release
+  set_fact:
+    set_fix_os_release: "{{ ansible_distribution_version }}"
+  when:
+    - fix_os_release is defined
+    - fixed_os_release == "fixed_yes"
+
+- name: Set fact fix_os_release when is not defined
+  set_fact:
+    set_fix_os_release: "{{ ansible_distribution_major_version }}Server"
+  when:
+    - ansible_distribution_major_version is defined
+    - fix_os_release is not defined or fixed_os_release == "fixed_no"
+
+- debug:
+    var: set_fact_cpd
+  when: set_fact_cpd is defined
+
+- debug:
+    var: set_fact_env
+  when: set_fact_env is defined
+
+- debug:
+    var: set_fact_isolate_node
+  when: set_fact_isolate_node is defined
+
+- debug:
+    var: set_ak_type
+  when: set_ak_type is defined
+
+- debug:
+    var: set_fix_os_release
+  when: set_fix_os_release is defined
+
+- debug:
+    var: env
+  when: env is defined
+
+- debug:
+    var: foreman_location_fact
+  when: foreman_location_fact is defined
+
+- debug:
+    var: smartproxy_fqdn
+  when: smartproxy_fqdn is defined
+
+- debug:
+    var: activation_key
+  when: activation_key is defined
+...
