@@ -1,13 +1,13 @@
 [tower]
-tower1.bancsabadell.com
-tower2.bancsabadell.com
-tower3.bancsabadell.com
+tower1.bcnconsulting.com
+tower2.bcnconsulting.com
+tower3.bcnconsulting.com
 
 [database]
-towerdb.bancsabadell.com
+towerdb.bcnconsulting.com
 
 # [isolated_group_aws]
-# xcmamidas978.devops.aws.bancsabadell.com
+# toweraws.bcnconsulting.com
 
 [tower:vars]
 ansible_ssh_user=root
@@ -19,9 +19,6 @@ ansible_ssh_user=root
 ansible_become=yes
 ansible_become_method='sudo'
 
-[isolated_group_azure:vars]
-controller=tower
-
-[isolated_group_aws:vars]
-controller=tower
+# [isolated_group_aws:vars]
+# controller=tower
 

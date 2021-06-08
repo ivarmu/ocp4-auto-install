@@ -46,7 +46,6 @@
   #   HTTPS_PROXY: "{{ proxy_url | default(omit) }}"
   #   http_proxy: "{{ proxy_url | default(omit) }}"
   #   https_proxy: "{{ proxy_url | default(omit) }}"
-  delegate_to: "{{ configure_tower_server }}"
   remote_user: root
   register: venv_create_res
 
@@ -80,7 +79,6 @@
   #   HTTPS_PROXY: "{{ proxy_url | default(omit) }}"
   #   http_proxy: "{{ proxy_url | default(omit) }}"
   #   https_proxy: "{{ proxy_url | default(omit) }}"
-  delegate_to: "{{ configure_tower_server }}"
   remote_user: root
 
 - name: "Tower Create VENV ({{ venv_name }}) | Install aditional libs"
@@ -97,7 +95,6 @@
   #   HTTPS_PROXY: "{{ proxy_url | default(omit) }}"
   #   http_proxy: "{{ proxy_url | default(omit) }}"
   #   https_proxy: "{{ proxy_url | default(omit) }}"
-  delegate_to: "{{ configure_tower_server }}"
   remote_user: root
   when: list_pip_package is defined and list_pip_package is not none and list_pip_package|length>0
 ...
