@@ -19,7 +19,7 @@ vcenter_datastore: datastore1
 #vcenter_folder: "{{ cluster_name }}"
 vcenter_folder: iaragone-ocp
 vcenter_network: VM Network
-vcenter_hostname: 10.1.11.192
+vcenter_hostname: dhcp-1-11-192.dsal.lab.eng.rdu2.redhat.com
 
 #### Only in Tower-mode
 #tower_used: True
