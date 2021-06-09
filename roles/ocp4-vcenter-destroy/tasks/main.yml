@@ -8,9 +8,59 @@
     datacenter: '{{ vcenter_datacenter }}'
   register: vcenter_folder_info
 
-- name: 'show vcenter folder info'
+- name: 'set vcenter folder info'
   set_fact:
     folder_names: "{{ vcenter_folder_info.flat_folder_info | selectattr('path', 'search', '^.*' + cluster_name + '.*$') | map(attribute='path') | list }}"
+
+- name: Get the list of the existing VMs
+  vmware_vm_facts:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    folder: '{{ folder_name }}'
+    validate_certs: False
+  loop: "{{ folder_names }}"
+  loop_control:
+    loop_var: folder_name
+  register: vm_list
+
+- name: Get the VMs UUIDs at our cluster
+  set_fact:
+    vms_uuids: "{{ result.virtual_machines | selectattr('guest_name', 'search', '^.*' + cluster_name + '.*$') | map(attribute='uuid') | list }}"
+  loop: "{{ vm_list.results }}"
+  loop_control:
+    loop_var: result
+
+- name: Show the VMs UUIDs at out cluster
+  debug:
+    var: vms_uuids
+
+- name: Removes the vm
+  vmware_guest:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    validate_certs: False
+    uuid: "{{ vm_uuid }}"
+    state: absent
+    force: true
+  register: remove_res
+  when: vms_uuids is defined
+  ignore_errors: true
+  with_items: "{{ vms_uuids }}"
+  loop_control:
+    loop_var: vm_uuid
+  async: 3600
+  poll: 0
+
+- name: Wait for VMs to be removed
+  async_status:
+    jid: "{{ item.ansible_job_id }}"
+  register: remove_jobs
+  when: item.ansible_job_id is defined
+  until: remove_jobs.finished
+  retries: 300
+  with_items: "{{ remove_res.results }}"
 
 - name: Destroy the entire vCenter Folder
   community.vmware.vcenter_folder:

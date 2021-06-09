@@ -23,7 +23,6 @@ vcenter_hostname: 'dhcp-1-11-192.dsal.lab.eng.rdu2.redhat.com'
 
 #### Only in Tower-mode
 #tower_used: True
-local_kubeconfig: '/tmp/{{ cluster_name }}/auth/kubeconfig'
 #ocp_cluster: ocpdr
 
 #### Install Vars
@@ -32,6 +31,7 @@ local_kubeconfig: '/tmp/{{ cluster_name }}/auth/kubeconfig'
 # global_var_installer_baseurl: "http://axinrhrepo.central.inditex.grp/sw/ocp/install/"
 # global_var_installer_program: "openshift-install-linux-{{ ocp4_version }}.tar.gz"
 # global_var_installer_clienttools: "openshift-client-linux-{{ ocp4_version }}.tar.gz"
+local_kubeconfig: '/tmp/{{ cluster_name }}/auth/kubeconfig'
 awscli-download: False
 prereqs: True
 uninstall_ocp: True # VERY CAREFUL WITH THIS VAR :)
@@ -40,10 +40,10 @@ uninstall_ocp: True # VERY CAREFUL WITH THIS VAR :)
 only_post_install: False
 
 # Worker Nodes
-worker_nodes: False
+worker_nodes: True
 
 # Infra Nodes
-infra_nodes: False
+infra_nodes: True
 infra_disk_size: 1024
 #infra_instance_type: r5.xlarge
 
@@ -52,7 +52,7 @@ elk_nodes: False
 
 # OAuth
 #oauth: htpasswd
-oauth: False
+oauth: True
 ocp4_htpasswd_admin_user: admin
 ocp4_htpasswd_dev_user: developer
 
@@ -72,7 +72,7 @@ prometheus_gp2_storage: 40Gi
 alertmanager_gp2_storage: 40Gi
 
 # Registry
-registry: False
+registry: True
 
 # ProjectRequestTemplate
 project_request_template: True
