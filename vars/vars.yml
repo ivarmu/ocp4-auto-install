@@ -3,21 +3,21 @@
 ocp4_version: '4.6.9'
 cloud_provider: 'vcenter'
 cluster_name: 'iaragone-ocp'
-ocp4_base_domain: 'bcnconsulting.com'
+ocp4_base_domain: 'manu.lab'
 #kubeconfig: '~/.kube/iaragone-ocp4'
-machineCIDR: "10.0.0.0/16"
+machineCIDR: "10.36.112.0/20"
 master_instance_count: 3
 worker_instance_count: 0
 kubeconfig: "{{ user_path }}/auth/kubeconfig"
 
 #### vSphere Vars
-vcenter_VIP: 192.168.207.150
-vcenter_ingressVIP: 192.168.207.151
-vcenter_cluster: Cluster1
-vcenter_datacenter: Datacenter1
+vcenter_VIP: 10.1.11.62
+vcenter_ingressVIP: 10.1.11.63
+vcenter_cluster: Cluster
+vcenter_datacenter: Datacenter
 vcenter_datastore: datastore1
 #vcenter_folder: "{{ cluster_name }}"
-vcenter_folder: iaragone-ocp-mgqn4
+vcenter_folder: iaragone-ocp
 vcenter_network: VM Network
 vcenter_hostname: vcenter.localdomain
 

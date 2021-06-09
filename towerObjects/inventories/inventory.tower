@@ -1,10 +1,13 @@
 [tower]
-tower1.bcnconsulting.com
-tower2.bcnconsulting.com
-tower3.bcnconsulting.com
+# tower1.bcnconsulting.com
+# tower2.bcnconsulting.com
+# tower3.bcnconsulting.com
+tower1.iam.lab
+tower2.iam.lab
 
 [database]
-towerdb.bcnconsulting.com
+#towerdb.bcnconsulting.com
+towerdb.iam.lab
 
 # [isolated_group_aws]
 # toweraws.bcnconsulting.com
