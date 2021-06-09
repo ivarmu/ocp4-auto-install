@@ -91,8 +91,6 @@ options:
     timeout:
       description:
         - The amount of time (in seconds) to run before the SCM Update is canceled. A value of 0 means no timeout.
-        - If waiting for the project to update this will abort after this
-          amount of seconds
       default: 0
       type: int
       aliases:
@@ -135,19 +133,6 @@ options:
         - list of notifications to send on error
       type: list
       elements: str
-    update_project:
-      description:
-        - Force project to update after changes.
-        - Used in conjunction with wait, interval, and timeout.
-      default: False
-      type: bool
-    interval:
-      description:
-        - The interval to request an update from Tower.
-        - Requires wait.
-      required: False
-      default: 1
-      type: float
 extends_documentation_fragment: ansible.tower.auth
 '''
 
@@ -179,13 +164,7 @@ from ..module_utils.tower_api import TowerAPIModule
 
 
 def wait_for_project_update(module, last_request):
-    # The current running job for the update is in last_request['summary_fields']['current_update']['id']
-
-    # Get parameters that were not passed in
-    update_project = module.params.get('update_project')
-    wait = module.params.get('wait')
-    timeout = module.params.get('timeout')
-    interval = module.params.get('interval')
+    # The current running job for the udpate is in last_request['summary_fields']['current_update']['id']
 
     if 'current_update' in last_request['summary_fields']:
         running = True
@@ -198,25 +177,6 @@ def wait_for_project_update(module, last_request):
 
         if result['status'] != 'successful':
             module.fail_json(msg="Project update failed")
-    elif update_project:
-        result = module.post_endpoint(last_request['related']['update'])
-
-        if result['status_code'] != 202:
-            module.fail_json(msg="Failed to update project, see response for details", response=result)
-
-        if not wait:
-            module.exit_json(**module.json_output)
-
-        # Grab our start time to compare against for the timeout
-        start = time.time()
-
-        # Invoke wait function
-        module.wait_on_url(
-            url=result['json']['url'],
-            object_name=module.get_item_name(last_request),
-            object_type='Project Update',
-            timeout=timeout, interval=interval
-        )
 
     module.exit_json(**module.json_output)
 
@@ -229,8 +189,8 @@ def main():
         scm_type=dict(choices=['manual', 'git', 'hg', 'svn', 'insights'], default='manual'),
         scm_url=dict(),
         local_path=dict(),
-        scm_branch=dict(),
-        scm_refspec=dict(),
+        scm_branch=dict(default=''),
+        scm_refspec=dict(default=''),
         credential=dict(aliases=['scm_credential']),
         scm_clean=dict(type='bool', default=False),
         scm_delete_on_update=dict(type='bool', default=False),
@@ -245,8 +205,6 @@ def main():
         notification_templates_error=dict(type="list", elements='str'),
         state=dict(choices=['present', 'absent'], default='present'),
         wait=dict(type='bool', default=True),
-        update_project=dict(default=False, type='bool'),
-        interval=dict(default=1.0, type='float'),
     )
 
     # Create a module for ourselves
@@ -273,8 +231,6 @@ def main():
     organization = module.params.get('organization')
     state = module.params.get('state')
     wait = module.params.get('wait')
-    update_project = module.params.get('update_project')
-    interval = module.params.get('interval')
 
     # Attempt to look up the related items the user specified (these will fail the module if not found)
     lookup_data = {}
@@ -344,7 +300,7 @@ def main():
     # If we are doing a not manual project, register our on_change method
     # An on_change function, if registered, will fire after an post_endpoint or update_if_needed completes successfully
     on_change = None
-    if wait and scm_type != '' or update_project and scm_type != '':
+    if wait and scm_type != '':
         on_change = wait_for_project_update
 
     # If the state was present and we can let the module build or update the existing project, this will return on its own

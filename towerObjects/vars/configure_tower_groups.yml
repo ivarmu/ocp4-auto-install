@@ -1,9 +1,9 @@
 ---
 configure_tower_groups:
-  - name: "localhost"
+  - name: "EphemeralOCP4localhostGroup"
     description: "Group for Local servers"
-    inventory: "localhost"
+    inventory: "EphemeralOCP4localhost"
     hosts:
-      - localhost
+      - "EphemeralOCP4localhost"
 ...
 

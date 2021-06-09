@@ -76,10 +76,10 @@ from ..module_utils.tower_api import TowerAPIModule
 def main():
     # Any additional arguments that are not fields of the item can be added here
     argument_spec = dict(
-        description=dict(),
+        description=dict(default=''),
         input_field_name=dict(required=True),
         target_credential=dict(required=True),
-        source_credential=dict(),
+        source_credential=dict(default=''),
         metadata=dict(type="dict"),
         state=dict(choices=['present', 'absent'], default='present'),
     )

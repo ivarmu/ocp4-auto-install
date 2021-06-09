@@ -30,6 +30,7 @@
     method: GET
     validate_certs: no
   register: current_venvs
+  when: inventory_hostname in groups['tower']
 
 - name: "Tower Create VENV ({{ venv_name }}) | Show Current Virtual Environments"
   debug:
@@ -48,6 +49,7 @@
   #   https_proxy: "{{ proxy_url | default(omit) }}"
   remote_user: root
   register: venv_create_res
+  when: inventory_hostname in groups['tower']
 
 - name: "Tower Create VENV ({{ venv_name }}) | Show the creation process output"
   debug:
@@ -66,6 +68,7 @@
     body_format: json
     headers:
       Content-Type: application/json
+  when: inventory_hostname in groups['tower']
 
 - name: "Tower Create VENV ({{ venv_name }}) | Install needed pip packages for virt env"
   pip:
@@ -80,6 +83,7 @@
   #   http_proxy: "{{ proxy_url | default(omit) }}"
   #   https_proxy: "{{ proxy_url | default(omit) }}"
   remote_user: root
+  when: inventory_hostname in groups['tower']
 
 - name: "Tower Create VENV ({{ venv_name }}) | Install aditional libs"
 #  include_role:
@@ -96,5 +100,7 @@
   #   http_proxy: "{{ proxy_url | default(omit) }}"
   #   https_proxy: "{{ proxy_url | default(omit) }}"
   remote_user: root
-  when: list_pip_package is defined and list_pip_package is not none and list_pip_package|length>0
+  when:
+    - list_pip_package is defined and list_pip_package is not none and list_pip_package|length>0
+    - inventory_hostname in groups['tower']
 ...

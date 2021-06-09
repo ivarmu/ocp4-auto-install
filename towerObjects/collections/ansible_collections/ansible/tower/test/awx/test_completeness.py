@@ -37,7 +37,7 @@ ignore_parameters = [
 # Add the module name as the key with the value being the list of params to ignore
 no_api_parameter_ok = {
     # The wait is for whether or not to wait for a project update on change
-    'tower_project': ['wait', 'interval', 'update_project'],
+    'tower_project': ['wait'],
     # Existing_token and id are for working with an existing tokens
     'tower_token': ['existing_token', 'existing_token_id'],
     # /survey spec is now how we handle associations
@@ -47,7 +47,7 @@ no_api_parameter_ok = {
     # Organization is how we are looking up job templates
     'tower_workflow_job_template_node': ['organization'],
     # Survey is how we handle associations
-    'tower_workflow_job_template': ['survey_spec'],
+    'tower_workflow_job_template': ['survey'],
     # ad hoc commands support interval and timeout since its more like tower_job_launc
     'tower_ad_hoc_command': ['interval', 'timeout', 'wait'],
 }

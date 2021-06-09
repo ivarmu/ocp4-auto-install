@@ -2,7 +2,7 @@
  "collection_info": {
   "namespace": "ansible",
   "name": "tower",
-  "version": "3.8.3",
+  "version": "3.8.1",
   "authors": [
    "AWX Project Contributors <awx-project@googlegroups.com>"
   ],
@@ -29,7 +29,7 @@
   "name": "FILES.json",
   "ftype": "file",
   "chksum_type": "sha256",
-  "chksum_sha256": "76a98a008240537c00ff5c8f894a8f1aaa3bc570155f706456e1f21c7e38e96a",
+  "chksum_sha256": "188be80047a8ac499211452a63022178208b150a9968d09ef65c845aa2ee2e0a",
   "format": 1
  },
  "format": 1
