@@ -12,7 +12,7 @@
       loop:
         - common
         - awscli
-        - vmw-prepare-certs
+        # - vmw-prepare-certs
 
       when:
         - only_post_install != True
