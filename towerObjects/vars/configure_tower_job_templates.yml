@@ -3,7 +3,7 @@ configure_tower_job_templates:
   - name: "Install OCP4 Ephemeral Cluster"
     description: "Install OCP4 Ephemeral Cluster"
     project: "Auto OCP4 Ephemeral Clusters"
-    inventory: "localhost"
+    inventory: "EphemeralOCP4localhost"
     playbook: "deploy_only.yml"
     job_type: run
     #extra_vars_path: ""
@@ -17,7 +17,7 @@ configure_tower_job_templates:
   - name: "Uninstall OCP4 Ephemeral Cluster"
     description: "Uninstall OCP4 Ephemeral Cluster"
     project: "Auto OCP4 Ephemeral Clusters"
-    inventory: "localhost"
+    inventory: "EphemeralOCP4localhost"
     playbook: "undeploy.yml"
     job_type: run
     #extra_vars_path: ""
