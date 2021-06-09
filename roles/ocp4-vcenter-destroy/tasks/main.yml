@@ -1,13 +1,28 @@
 ---
 # tasks file for ocp4-vcenter-destroy
+- name: Get vCenter Folder Information
+  community.vmware.vmware_folder_info:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    datacenter: '{{ vcenter_datacenter }}'
+  register: vcenter_folder_info
+
+- name: 'show vcenter folder info'
+  set_fact:
+    folder_names: "{{ vcenter_folder_info.flat_folder_info | selectattr('path', 'search', '^.*' + cluster_name + '.*$') | map(attribute='path') | list }}"
+
 - name: Destroy the entire vCenter Folder
   community.vmware.vcenter_folder:
     hostname: '{{ vcenter_hostname }}'
     username: '{{ vcenter_username }}'
     password: '{{ vcenter_password }}'
     datacenter_name: '{{ vcenter_datacenter }}'
-    folder_name: 'iaragone-ocp-mgqn4'
+    folder_name: "{{ folder_name | regex_replace('.*/(..)', '\\1') | trim }}"
     state: absent
+  loop: "{{ folder_names }}"
+  loop_control:
+    loop_var: folder_name
   register: vm_folder_deletion_result
 
 - name: debug

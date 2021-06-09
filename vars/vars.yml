@@ -1,6 +1,6 @@
 ---
 #### Cluster Vars
-ocp4_version: '4.6.9'
+ocp4_version: '4.6.18'
 cloud_provider: 'vcenter'
 cluster_name: 'iaragone-ocp'
 ocp4_base_domain: 'manu.lab'
@@ -11,22 +11,27 @@ worker_instance_count: 0
 kubeconfig: "{{ user_path }}/auth/kubeconfig"
 
 #### vSphere Vars
-vcenter_VIP: 10.1.11.62
-vcenter_ingressVIP: 10.1.11.63
-vcenter_cluster: Cluster
-vcenter_datacenter: Datacenter
-vcenter_datastore: datastore1
-#vcenter_folder: "{{ cluster_name }}"
-vcenter_folder: iaragone-ocp
-vcenter_network: VM Network
-vcenter_hostname: dhcp-1-11-192.dsal.lab.eng.rdu2.redhat.com
+vcenter_VIP: '10.1.11.62'
+vcenter_ingressVIP: '10.1.11.63'
+vcenter_cluster: 'Cluster'
+vcenter_datacenter: 'Datacenter1'
+vcenter_datastore: 'datastore-sas'
+vcenter_folder: "{{ cluster_name }}"
+# vcenter_folder: 'iaragone-ocp'
+vcenter_network: 'VM Network'
+vcenter_hostname: 'dhcp-1-11-192.dsal.lab.eng.rdu2.redhat.com'
 
 #### Only in Tower-mode
 #tower_used: True
-#local_kubeconfig: '~/.kube/{{ cluster_name }}'
+local_kubeconfig: '/tmp/{{ cluster_name }}/auth/kubeconfig'
 #ocp_cluster: ocpdr
 
 #### Install Vars
+# Cliente OC: http://axinrhrepo.central.inditex.grp/sw/ocp/install/openshift-client-linux-4.6.18.tar.gz
+# Instalador: http://axinrhrepo.central.inditex.grp/sw/ocp/install/openshift-install-linux-4.6.18.tar.gz
+# global_var_installer_baseurl: "http://axinrhrepo.central.inditex.grp/sw/ocp/install/"
+# global_var_installer_program: "openshift-install-linux-{{ ocp4_version }}.tar.gz"
+# global_var_installer_clienttools: "openshift-client-linux-{{ ocp4_version }}.tar.gz"
 awscli-download: False
 prereqs: True
 uninstall_ocp: True # VERY CAREFUL WITH THIS VAR :)

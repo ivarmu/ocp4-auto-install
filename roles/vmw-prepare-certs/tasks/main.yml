@@ -24,10 +24,12 @@
     dest: "/etc/pki/ca-trust/source/anchors"
     remote_src: yes
   with_fileglob: "{{ user_path }}/vcentercerts/certs/lin/*"
+  become: true
   when: vcentercafile.changed
 
 - name: '[PREREQS][VMW-GET-CERTS] Update the system trust'
   shell: "update-ca-trust extract"
+  become: true
   when: vcentercafile.changed
 
 ...
