@@ -3,21 +3,33 @@ kind: MachineSet
 metadata:
   labels:
     machine.openshift.io/cluster-api-cluster: {{ machineset.infrastructure_id }}
+{% if cloud_provider == 'ec2' %}
   name: {{ machineset.infrastructure_id }}-{{ machineset.name_identifier }}-{{ machineset.region }}{{ zone_suffix }}
+{% elif cloud_provider == 'vcenter' %}
+  name: {{ machineset.infrastructure_id }}-{{ machineset.name_identifier }}
+{% endif %}
   namespace: openshift-machine-api
 spec:
   replicas: 1
   selector:
     matchLabels:
       machine.openshift.io/cluster-api-cluster: {{ machineset.infrastructure_id }}
+{% if cloud_provider == 'ec2' %}
       machine.openshift.io/cluster-api-machineset: {{ machineset.infrastructure_id }}-{{ machineset.node_labels.0 }}-{{ machineset.region }}{{ zone_suffix }}
+{% elif cloud_provider == 'vcenter' %}
+      machine.openshift.io/cluster-api-machineset: {{ machineset.infrastructure_id }}-{{ machineset.node_labels.0 }}
+{% endif %}
   template:
     metadata:
       labels:
         machine.openshift.io/cluster-api-cluster: {{ machineset.infrastructure_id }}
         machine.openshift.io/cluster-api-machine-role: {{ machineset.node_labels.0 }}
         machine.openshift.io/cluster-api-machine-type: {{ machineset.node_labels.0 }}
+{% if cloud_provider == 'ec2' %}
         machine.openshift.io/cluster-api-machineset: {{ machineset.infrastructure_id }}-{{ machineset.node_labels.0 }}-{{ machineset.region }}{{ zone_suffix }}
+{% elif cloud_provider == 'vcenter' %}
+        machine.openshift.io/cluster-api-machineset: {{ machineset.infrastructure_id }}-{{ machineset.node_labels.0 }}
+{% endif %}
     spec:
       metadata:
         labels:
@@ -29,6 +41,7 @@ spec:
 {% endfor %}
       providerSpec:
         value:
+{% if cloud_provider == 'ec2' %}
           ami:
             id: {{ machineset.aws_ami }}
           apiVersion: awsproviderconfig.openshift.io/v1beta1
@@ -60,6 +73,29 @@ spec:
           tags:
             - name: kubernetes.io/cluster/{{ machineset.infrastructure_id }}
               value: owned
+{% elif cloud_provider == 'vcenter' %}
+          apiVersion: vsphereprovider.openshift.io/v1beta1
+          credentialsSecret:
+            name: vsphere-cloud-credentials
+          diskGiB: 120
+          kind: VSphereMachineProviderSpec
+          memoryMiB: 8192
+          metadata:
+            creationTimestamp: null
+          network:
+            devices:
+            - networkName: "{{ vcenter_network }}"
+          numCPUs: 4
+          numCoresPerSocket: 1
+          snapshot: ""
+          template: "{{ infrastructure_id }}-rhcos
+          workspace:
+            datacenter: "{{ vcenter_datacenter }}"
+            datastore: "{{ vcenter_datastore }}"
+            folder: "{{ vcenter_folder }}"
+            # resourcepool: <vsphere_resource_pool>
+            server: "{{ vcenter_hostname }}"
+{% endif %}
           userDataSecret:
             name: worker-user-data
 {% if ceph_namespace is defined  %}

@@ -20,17 +20,18 @@
     name: "{{ cluster_info.resources.0.status.infrastructureName }}-master-0"
     namespace: openshift-machine-api
   register: amimaster0
+  when: cloud_provider is match('ec2')
 
 - name: '[POSTINSTALL][MACHINESET] Build the {{ node_labels }} machineset facts'
   set_fact:
     machineset:
       infrastructure_id: "{{ cluster_info.resources.0.status.infrastructureName }}"
-      region: "{{ cluster_info.resources.0.status.platformStatus.aws.region }}"
+      region: "{{ cluster_info.resources.0.status.platformStatus.aws.region if cloud_provider is match('ec2') else omit }}"
       node_labels: "{{ node_labels }}"
-      zone_suffixes: "{{ zone_suffixes }}"
-      aws_ami: "{{ amimaster0.resources.0.spec.providerSpec.value.ami.id }}"
+      zone_suffixes: "{{ zone_suffixes if cloud_provider is match('ec2') else omit }}"
+      aws_ami: "{{ amimaster0.resources.0.spec.providerSpec.value.ami.id if cloud_provider is match('ec2') else omit }}"
       disk_size: "{{ disk_size }}"
-      instance_type: "{{ instance_type }}"
+      instance_type: "{{ instance_type if cloud_provider is match('ec2') else omit }}"
       name_identifier: "{{ name_identifier }}"
 
 - name: '[POSTINSTALL][MACHINESET] Display the data for the {{ node_labels }} machinesets'
