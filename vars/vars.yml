@@ -1,6 +1,6 @@
 ---
 #### Cluster Vars
-ocp4_version: '4.6.18'
+ocp4_version: '4.6.9'
 cloud_provider: 'vcenter'
 cluster_name: 'iaragone-ocp'
 ocp4_base_domain: 'manu.lab'
@@ -20,6 +20,7 @@ vcenter_folder: "{{ cluster_name }}"
 # vcenter_folder: 'iaragone-ocp'
 vcenter_network: 'VM Network'
 vcenter_hostname: 'dhcp-1-11-192.dsal.lab.eng.rdu2.redhat.com'
+auto_vcenter_ca_certs: False
 
 #### Only in Tower-mode
 tower_used: True
