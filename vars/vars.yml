@@ -9,7 +9,7 @@ machineCIDR: "10.36.112.0/20"
 master_instance_count: 3
 worker_instance_count: 2
 kubeconfig: "{{ user_path }}/auth/kubeconfig"
-local_kubeconfig: '~/.kube/iaragone-ocp4'
+local_kubeconfig: '/var/lib/awx/.kube/iaragone-ocp4'
 
 #### vSphere Vars
 vcenter_VIP: '10.1.11.62'

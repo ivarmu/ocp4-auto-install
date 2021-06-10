@@ -88,7 +88,7 @@ spec:
           numCPUs: 4
           numCoresPerSocket: 1
           snapshot: ""
-          template: "{{ infrastructure_id }}-rhcos
+          template: "{{ machineset.infrastructure_id }}-rhcos
           workspace:
             datacenter: "{{ vcenter_datacenter }}"
             datastore: "{{ vcenter_datastore }}"
