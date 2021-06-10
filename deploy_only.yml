@@ -15,11 +15,11 @@
         - { rolename: vmw-prepare-certs, vCenterCACerts: "{{ auto_vcenter_ca_certs }}" }
       loop_control:
         loop_var: roleitem
-      when: roleitem.vCenterCACerts | default('True') | bool
-
       when:
         - only_post_install != True
         - prereqs == True
+        - roleitem.vCenterCACerts | default(True) | bool
+
 
     - name: '[OCP4-AUTO-INSTALL][INSTALL] Installation of the OCP4 Cluster'
       include_role:
