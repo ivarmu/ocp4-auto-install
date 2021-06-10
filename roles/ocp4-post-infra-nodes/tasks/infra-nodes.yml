@@ -10,7 +10,7 @@
 
 - name: '[POSTINSTALL][INFRA-NODES] Deploy Infra Nodes MachineSet'
   vars:
-    instance_type: "{{ infra_instance_type }}"
+    instance_type: "{{ infra_instance_type if cloud_provider is match('e2c') else omit }}"
     disk_size: "{{ infra_disk_size }}"
     node_labels:
     - "{{ infra_label }}"
