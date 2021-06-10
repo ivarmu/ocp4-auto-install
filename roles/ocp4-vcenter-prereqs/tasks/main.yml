@@ -14,4 +14,18 @@
 - name: Show the output of the folder creation
   debug:
     var: vm_folder_creation_result
+
+# Output success example
+# TASK [ocp4-vcenter-prereqs : Show the output of the folder creation] ***********
+# ok: [localhost] => {
+#     "vm_folder_creation_result": {
+#         "changed": true,
+#         "failed": false,
+#         "result": {
+#             "msg": "Folder 'iaragone-ocp' of type 'vm' created successfully.",
+#             "path": "/Datacenter1/vm/iaragone-ocp"
+#         }
+#     }
+# }
+
 ...
