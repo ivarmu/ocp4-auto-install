@@ -2,13 +2,14 @@
 #### Cluster Vars
 ocp4_version: '4.6.18'
 cloud_provider: 'vcenter'
-cluster_name: 'iaragone2-ocp'
+cluster_name: 'iaragone-ocp'
 ocp4_base_domain: 'ivarmu.lab'
 #kubeconfig: '~/.kube/iaragone-ocp4'
 machineCIDR: "10.36.112.0/20"
 master_instance_count: 3
 worker_instance_count: 2
 kubeconfig: "{{ user_path }}/auth/kubeconfig"
+local_kubeconfig: '~/.kube/iaragone-ocp4'
 
 #### vSphere Vars
 vcenter_VIP: '10.1.11.62'
@@ -17,14 +18,12 @@ vcenter_cluster: 'Cluster'
 vcenter_datacenter: 'Datacenter1'
 vcenter_datastore: 'datastore-sas'
 vcenter_folder: "{{ cluster_name }}"
-# vcenter_folder: 'iaragone-ocp'
 vcenter_network: 'VM Network'
 vcenter_hostname: 'dhcp-1-11-192.dsal.lab.eng.rdu2.redhat.com'
 auto_vcenter_ca_certs: False
 
 #### Only in Tower-mode
 tower_used: True
-#ocp_cluster: ocpdr
 
 #### Install Vars
 # Cliente OC: http://axinrhrepo.central.inditex.grp/sw/ocp/install/openshift-client-linux-4.6.18.tar.gz
@@ -32,10 +31,9 @@ tower_used: True
 # global_var_installer_baseurl: "http://axinrhrepo.central.inditex.grp/sw/ocp/install/"
 # global_var_installer_program: "openshift-install-linux-{{ ocp4_version }}.tar.gz"
 # global_var_installer_clienttools: "openshift-client-linux-{{ ocp4_version }}.tar.gz"
-local_kubeconfig: '/tmp/{{ cluster_name }}/auth/kubeconfig'
 awscli-download: False
 prereqs: True
-uninstall_ocp: True # VERY CAREFUL WITH THIS VAR :)
+uninstall_ocp: False # VERY CAREFUL WITH THIS VAR :)
 
 #### Post Install Vars
 only_post_install: False
@@ -46,10 +44,11 @@ worker_nodes: True
 # Infra Nodes
 infra_nodes: True
 infra_disk_size: 1024
+# for AWX
 #infra_instance_type: r5.xlarge
 
 # ELK infra nodes
-elk_nodes: False
+elk_nodes: True
 
 # OAuth
 #oauth: htpasswd
@@ -67,7 +66,7 @@ es_channel: 4.6 #Define the ES version of the operator
 clo_channel: 4.6 #Define the ClusterLogging version of the operator
 
 # Monitoring
-monitoring: False
+monitoring: True
 prom_retention: 1w
 prometheus_gp2_storage: 40Gi
 alertmanager_gp2_storage: 40Gi

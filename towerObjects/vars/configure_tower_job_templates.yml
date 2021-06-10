@@ -4,7 +4,7 @@ configure_tower_job_templates:
     description: "Install OCP4 Ephemeral Cluster"
     project: "Auto OCP4 Ephemeral Clusters"
     inventory: "EphemeralOCP4localhost"
-    playbook: "deploy_only.yml"
+    playbook: "deploy_all.yml"
     job_type: run
     #extra_vars_path: ""
     fact_caching_enabled: true
