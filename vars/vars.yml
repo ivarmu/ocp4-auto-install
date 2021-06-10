@@ -2,7 +2,7 @@
 #### Cluster Vars
 ocp4_version: '4.6.18'
 cloud_provider: 'vcenter'
-cluster_name: 'iaragone-ocp'
+cluster_name: 'iaragone2-ocp'
 ocp4_base_domain: 'ivarmu.lab'
 #kubeconfig: '~/.kube/iaragone-ocp4'
 machineCIDR: "10.36.112.0/20"
