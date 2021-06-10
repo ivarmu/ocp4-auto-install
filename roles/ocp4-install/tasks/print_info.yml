@@ -1,6 +1,6 @@
 ---
 
-- name: '[PRINT-INFO] Get ClusterVersion'
+- name: '[PRINT-INFO] Pause for 5 minutes'
   pause:
     minutes: 5
   when: not tower_used
