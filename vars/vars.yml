@@ -7,7 +7,7 @@ ocp4_base_domain: 'ivarmu.lab'
 #kubeconfig: '~/.kube/iaragone-ocp4'
 machineCIDR: "10.36.112.0/20"
 master_instance_count: 3
-worker_instance_count: 0
+worker_instance_count: 2
 kubeconfig: "{{ user_path }}/auth/kubeconfig"
 
 #### vSphere Vars
