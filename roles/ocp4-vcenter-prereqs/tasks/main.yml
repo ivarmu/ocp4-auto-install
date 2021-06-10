@@ -1,0 +1,17 @@
+---
+# tasks file for ocp4-vcenter-destroy
+- name: Create a VM folder on given datacenter
+  community.vmware.vcenter_folder:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    datacenter_name: '{{ vcenter_datacenter }}'
+    folder_name: '{{ vcenter_folder }}'
+    folder_type: vm
+    state: present
+  register: vm_folder_creation_result
+
+- name: Show the output of the folder creation
+  debug:
+    var: vm_folder_creation_result
+...
