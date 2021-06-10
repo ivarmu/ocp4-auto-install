@@ -15,6 +15,12 @@
   debug:
     var: vm_folder_creation_result
 
+- debug:
+    msg: "The cluster folder already exists: {{ vm_folder_creation_result.result.msg }}"
+  when:
+    - not vm_folder_creation_result.changed
+    - not vm_folder_creation_result.failed
+
 # Output success example
 # TASK [ocp4-vcenter-prereqs : Show the output of the folder creation] ***********
 # ok: [localhost] => {
@@ -27,5 +33,17 @@
 #         }
 #     }
 # }
+# TASK [ocp4-vcenter-prereqs : Show the output of the folder creation] ***********
+# ok: [localhost] => {
+#     "vm_folder_creation_result": {
+#         "changed": false,
+#         "failed": false,
+#         "result": {
+#             "msg": "Folder iaragone-ocp already exists",
+#             "path": "/Datacenter1/vm/iaragone-ocp"
+#         }
+#     }
+# }
+
 
 ...

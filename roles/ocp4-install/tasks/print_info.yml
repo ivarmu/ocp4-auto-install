@@ -3,6 +3,7 @@
 - name: '[PRINT-INFO] Get ClusterVersion'
   pause:
     minutes: 5
+  when: not tower_used
 
 - name: '[PRINT-INFO] Get ClusterVersion'
   k8s_info:

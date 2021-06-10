@@ -7,7 +7,7 @@
   loop:
     - "{{ user_path }}"
     - "{{ user_path }}/.ssh"
-    - "{{ local_kubeconfig }}"
+    - "{{ local_kubeconfig | regex_replace('\/[^\/]*$', '') }}"
   loop_control:
     loop_var: directory_to_create
 
