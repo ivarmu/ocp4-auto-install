@@ -22,7 +22,7 @@ vcenter_network: 'VM Network'
 vcenter_hostname: 'dhcp-1-11-192.dsal.lab.eng.rdu2.redhat.com'
 
 #### Only in Tower-mode
-#tower_used: True
+tower_used: True
 #ocp_cluster: ocpdr
 
 #### Install Vars
