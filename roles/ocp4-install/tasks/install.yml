@@ -34,7 +34,7 @@
 - name: '[INSTALL_CONFIG] Gzip Install files'
   archive:
     path: "{{ user_path }}/{{ item }}"
-    dest: "{{ tower_path }}/{{ cluster_name }}-{{ ocp_cluster }}-install.gz"
+    dest: "{{ tower_path }}/{{ cluster_name }}-install.gz"
     format: gz
   loop:
     - .openshift_install_state.json
