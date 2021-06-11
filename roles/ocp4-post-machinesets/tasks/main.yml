@@ -31,7 +31,7 @@
       node_labels: "{{ node_labels }}"
       zone_suffixes: "{{ zone_suffixes if cloud_provider is match('ec2') else omit }}"
       aws_ami: "{{ amimaster0.resources.0.spec.providerSpec.value.ami.id if cloud_provider is match('ec2') else omit }}"
-      disk_size: "{{ disk_size }}"
+      disk_size: "{{ infra_disk_size }}"
       instance_type: "{{ instance_type if cloud_provider is match('ec2') else omit }}"
       name_identifier: "{{ name_identifier }}"
 
