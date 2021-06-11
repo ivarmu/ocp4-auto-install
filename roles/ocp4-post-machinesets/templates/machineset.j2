@@ -92,7 +92,7 @@ spec:
           workspace:
             datacenter: "{{ vcenter_datacenter }}"
             datastore: "{{ vcenter_datastore }}"
-            folder: "{{ vcenter_folder }}"
+            folder: "{{ vcenter_datacenter }}/vm/{{ vcenter_folder }}"
             # resourcepool: <vsphere_resource_pool>
             server: "{{ vcenter_hostname }}"
 {% endif %}
