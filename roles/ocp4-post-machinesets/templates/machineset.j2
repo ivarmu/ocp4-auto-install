@@ -10,7 +10,7 @@ metadata:
 {% endif %}
   namespace: openshift-machine-api
 spec:
-  replicas: 1
+  replicas: {{ machineset.infra_node_replicas }}
   selector:
     matchLabels:
       machine.openshift.io/cluster-api-cluster: {{ machineset.infrastructure_id }}
