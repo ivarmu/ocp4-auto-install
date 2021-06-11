@@ -15,13 +15,13 @@
   vars:
     instance_type: r5.xlarge
     node_labels:
-    - infra
-    - infra-efk
+      - "{{ infra_label }}"
+      - "{{ infra_label }}-efk"
     zone_suffixes:
       - a
       - b
       - c
-    name_identifier: infra-efk
+    name_identifier: "{{ infra_label }}-efk"
 
 - name: '[POSTINSTALL][INFRA-NODES] Wait for Elasticsearch Nodes to be available'
   when: _infra_node_elasticsearch_nodes | d(False) | bool

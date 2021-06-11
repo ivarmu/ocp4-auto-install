@@ -9,6 +9,8 @@
   register: infradata
 
 - name: '[POSTINSTALL][INFRA-NODES] Deploy Infra Nodes MachineSet'
+  include_role:
+    name: ocp4-post-machinesets
   vars:
     instance_type: "{{ infra_instance_type if cloud_provider is match('e2c') else omit }}"
     disk_size: "{{ infra_disk_size }}"
@@ -19,8 +21,6 @@
       - b
       - c
     name_identifier: "{{ infra_label }}"
-  include_role:
-    name: ocp4-post-machinesets
 
 - name: '[POSTINSTALL][INFRA-NODES] Wait for Infra Nodes to be available'
   k8s_facts:
@@ -60,11 +60,11 @@
     kubeconfig: "{{ kubeconfig }}"
     state: present
     merge_type:
-    - merge
+      - merge
     definition: "{{ lookup('template', '{{ item }}') }}"
   loop:
-  - ./templates/machine-config-daemonset.j2
-  - ./templates/node-ca-daemonset.j2
+    - ./templates/machine-config-daemonset.j2
+    - ./templates/node-ca-daemonset.j2
 
 - name: '[POSTINSTALL][INFRA-NODES] Configure Ingress Controllers and Image Registry'
   when: ocp4_workload_machinesets_cluster_version is version_compare('4.5', '<')
@@ -72,8 +72,9 @@
     kubeconfig: "{{ kubeconfig }}"
     state: present
     merge_type:
-    - merge
+      - merge
     definition: "{{ lookup('template', '{{ item }}') }}"
   loop:
-  - ./templates/ingress-controller.j2
-  - ./templates/image-registry.j2
+    - ./templates/ingress-controller.j2
+    - ./templates/image-registry.j2
+...
