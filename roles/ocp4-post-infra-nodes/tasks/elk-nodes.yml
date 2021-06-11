@@ -8,6 +8,24 @@
     name: cluster
   register: infradata
 
+# https://access.redhat.com/solutions/4287111
+- name: '[POSTINSTALL][WORKER-NODES] Apply the application label to the worker nodes'
+  k8s:
+    kubeconfig: "{{ kubeconfig }}"
+    api_version: v1
+    kind: Node
+    name: "{{ node.metadata.name }}"
+    definition:
+      metadata:
+        labels:
+          'node-role.kubernetes.io/infra-efk': ""
+  loop: "{{ nodedata.resources }}"
+  loop_control:
+    loop_var: node
+  when:
+    - node.metadata.labels['node-role.kubernetes.io/worker'] is defined
+    - node.metadata.labels['node-role.kubernetes.io/infra'] is defined
+
 - name: '[POSTINSTALL][INFRA-NODES] Deploy Infra EFK Nodes MachineSet'
   include_role:
     # name: machineset
