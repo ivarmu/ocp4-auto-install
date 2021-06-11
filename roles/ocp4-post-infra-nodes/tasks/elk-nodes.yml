@@ -9,7 +9,7 @@
   register: infradata
 
 # https://access.redhat.com/solutions/4287111
-- name: '[POSTINSTALL][WORKER-NODES] Apply the application label to the worker nodes'
+- name: '[POSTINSTALL][WORKER-NODES] Apply the infra-efk label to the infra nodes'
   k8s:
     kubeconfig: "{{ kubeconfig }}"
     api_version: v1
