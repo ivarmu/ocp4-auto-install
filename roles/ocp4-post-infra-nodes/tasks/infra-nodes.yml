@@ -13,7 +13,7 @@
     instance_type: "{{ infra_instance_type if cloud_provider is match('e2c') else omit }}"
     disk_size: "{{ infra_disk_size }}"
     node_labels:
-    - "{{ infra_label }}"
+      - "{{ infra_label }}"
     zone_suffixes:
       - a
       - b
@@ -28,10 +28,10 @@
     api_version: v1
     kind: Node
     label_selectors:
-    - node-role.kubernetes.io/infra =
+      - 'node-role.kubernetes.io/infra='
   register: r_infra_nodes
   until:
-  - r_infra_nodes.resources | length | int == infra_node_replicas | int
+    - r_infra_nodes.resources | length | int == infra_node_replicas | int
   delay: 30
   retries: 15
 
