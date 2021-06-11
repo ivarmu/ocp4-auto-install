@@ -9,6 +9,9 @@
   register: infradata
 
 - name: '[POSTINSTALL][INFRA-NODES] Deploy Infra EFK Nodes MachineSet'
+  include_role:
+    # name: machineset
+    name: ocp4-post-machinesets
   vars:
     instance_type: r5.xlarge
     node_labels:
@@ -19,8 +22,6 @@
       - b
       - c
     name_identifier: infra-efk
-  include_role:
-    name: machineset
 
 - name: '[POSTINSTALL][INFRA-NODES] Wait for Elasticsearch Nodes to be available'
   when: _infra_node_elasticsearch_nodes | d(False) | bool
