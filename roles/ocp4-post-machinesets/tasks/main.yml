@@ -39,6 +39,9 @@
 - name: '[POSTINSTALL][MACHINESET] Display the data for the {{ node_labels }} machinesets'
   debug:
     var: machineset
+- name: '[POSTINSTALL][MACHINESET] Display the result of templating'
+  debug:
+    msg: "{{ lookup('template', 'templates/machineset.j2') }}"
 
 - name: '[POSTINSTALL][MACHINESET] Create the {{ node_labels }} machineset'
   k8s:
