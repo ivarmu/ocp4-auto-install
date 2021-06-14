@@ -48,6 +48,6 @@
     state: present
     resource_definition: "{{ lookup('template', 'templates/machineset.j2') }}"
     validate_certs: false
-  loop: "{{ zone_suffixes if cloud_provider is match('e2c') else ['none2c'] }}"
+  loop: "{{ zone_suffixes if cloud_provider is match('ec2') else ['nonec2'] }}"
   loop_control:
     loop_var: zone_suffix
