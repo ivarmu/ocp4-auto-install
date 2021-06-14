@@ -24,7 +24,7 @@
         effect: NoSchedule
       - key: infra
         value: reserved
-        effect: NoExec
+        effect: NoExecute
 
 - name: '[POSTINSTALL][INFRA-NODES] Wait for Infra Nodes to be available'
   k8s_facts:

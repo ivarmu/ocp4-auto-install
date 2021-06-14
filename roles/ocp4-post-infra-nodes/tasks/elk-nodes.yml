@@ -42,13 +42,13 @@
         effect: NoSchedule
       - key: infra
         value: reserved
-        effect: NoExec
+        effect: NoExecute
       - key: logging
         value: reserved
         effect: NoSchedule
       - key: logging
         value: reserved
-        effect: NoExec
+        effect: NoExecute
 
 - name: '[POSTINSTALL][INFRA-NODES] Wait for Elasticsearch Nodes to be available'
   when: _infra_node_elasticsearch_nodes | d(False) | bool
