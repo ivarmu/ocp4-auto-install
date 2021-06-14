@@ -99,7 +99,7 @@ spec:
           userDataSecret:
             name: worker-user-data
 {% if machineset.taints is defined %}
-      {{ machineset.taints }}
+      taints: {{ machineset.taints }}
 {% endif %}
 {#
 {% if ceph_namespace is defined  %}
