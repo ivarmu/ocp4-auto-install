@@ -84,7 +84,7 @@ spec:
             creationTimestamp: null
           network:
             devices:
-            - networkName: "{{ vcenter_network }}"
+              - networkName: "{{ vcenter_network }}"
           numCPUs: 4
           numCoresPerSocket: 1
           snapshot: ""
@@ -98,9 +98,15 @@ spec:
 {% endif %}
           userDataSecret:
             name: worker-user-data
+{% if machineset.taints is defined %}
+      {{ machineset.taints }}
+{% endif %}
+{#
 {% if ceph_namespace is defined  %}
       taints:
         - effect: NoSchedule
           key: node.ocs.openshift.io/storage
           value: 'true'
 {% endif %}
+#}
+

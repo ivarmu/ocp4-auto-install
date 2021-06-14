@@ -16,11 +16,15 @@
     disk_size: "{{ infra_disk_size }}"
     node_labels:
       - "{{ infra_label }}"
-    zone_suffixes:
-      - a
-      - b
-      - c
+    zone_suffixes: "{{ [a, b, c] if cloud_provider is match('ec2') else [nonec2] }}"
     name_identifier: "{{ infra_label }}"
+    taints:
+      - key: infra
+        value: reserved
+        effect: NoSchedule
+      - key: infra
+        value: reserved
+        effect: NoExec
 
 - name: '[POSTINSTALL][INFRA-NODES] Wait for Infra Nodes to be available'
   k8s_facts:

@@ -28,7 +28,6 @@
 
 - name: '[POSTINSTALL][INFRA-NODES] Deploy Infra EFK Nodes MachineSet'
   include_role:
-    # name: machineset
     name: ocp4-post-machinesets
   vars:
     instance_type: "{{ 'r5.xlarge' if cloud_provider is match('ec2') else omit }}"
@@ -37,6 +36,19 @@
       - "{{ infra_label }}-efk"
     zone_suffixes: "{{ [a, b, c] if cloud_provider is match('ec2') else [nonec2] }}"
     name_identifier: "{{ infra_label }}"
+    taints:
+      - key: infra
+        value: reserved
+        effect: NoSchedule
+      - key: infra
+        value: reserved
+        effect: NoExec
+      - key: logging
+        value: reserved
+        effect: NoSchedule
+      - key: logging
+        value: reserved
+        effect: NoExec
 
 - name: '[POSTINSTALL][INFRA-NODES] Wait for Elasticsearch Nodes to be available'
   when: _infra_node_elasticsearch_nodes | d(False) | bool
